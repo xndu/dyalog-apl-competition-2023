@@ -13,18 +13,29 @@ vin←{
 sortVersions←{
   1=≡⍵: ,⊂⍵
   split←~⍤∊∘'-.'⊆⊢
-  ⍝compare version numbers numerically
+  ⍝ compare version numbers numerically
   order←⊂⍋⍎¨@3 4 5∘split¨⍵
   order⌷⍵
 }
 
-makeChange←{
-  ⍺≡⍬:(0=⍵)0⍴0
-  range←¯1+⍳1+⌊⍵÷⊢/⍺
-  ⊃⍪/ range ,⍨¨ (⊂¯1↓⍺)∇¨⍵-range×⊢/⍺
+makeChange←{⎕IO←0
+  ⍺≡⍬: (0=⍵) 0⍴0
+  range←⍳1+⌊⍵÷⊢/⍺
+  ↑⍪/ range ,⍨∘((¯1↓⍺)∘∇)¨⍵-range×⊢/⍺
+}
+bruteforce←{⎕IO←0
+  ↑⍸⍵=↑∘.+/⍺×⍳¨1+⌊⍵÷⍺
 }
 
-partition←{
-  shape move offset←⍺
-  
-}
+ partition←{
+     (shape move offset)←{
+         1≥|≡⍵:0 1 ⎕IO+3↑⊂⍵
+         (1∘>∨>∘3)≢⍵:⍬
+         0(1=≢⍵)(⎕IO×2≥≢⍵)+3↑⍵
+     }⍺
+     shape>⍥≢⍴⍵:0⍴⊂shape⍴0
+     w←⍵↓⍨offset-⎕IO
+     pre←(-≢shape)↑⍴w
+     ind←↑∘.,/move×⎕IO-⍨⍳¨⌈move÷⍨1+pre-shape
+     ,ind(shape↑↓)¨∘⊂⍤(≢shape)⊢w
+ }

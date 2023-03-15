@@ -20,8 +20,10 @@ sortVersions←{
 
 makeChange←{⎕IO←0
   ⍺≡⍬: (0=⍵) 0⍴0
-  range←⍳1+⌊⍵÷⊢/⍺
-  ↑⍪/ range ,⍨∘((¯1↓⍺)∘∇)¨⍵-range×⊢/⍺
+  most←¯1↓⍺
+  last←⊢/⍺
+  range←⍳1+⌊⍵÷last
+  ↑⍪/ last (⊢,⍨most∇⍵-×)¨ range
 }
 bruteforce←{⎕IO←0
   ↑⍸⍵=↑∘.+/⍺×⍳¨1+⌊⍵÷⍺
@@ -29,13 +31,18 @@ bruteforce←{⎕IO←0
 
  partition←{
      (shape move offset)←{
-         1≥|≡⍵:0 1 ⎕IO+3↑⊂⍵
+         1≥|≡⍵:0 1 0+3↑⊂⍵
          (1∘>∨>∘3)≢⍵:⍬
-         0(1=≢⍵)(⎕IO×2≥≢⍵)+3↑⍵
+         w←3↑⍵
+         w[2]+←1=≢⍵
+         w[3]-←⎕IO×3=≢⍵
+         w
      }⍺
+     ⎕IO←0
+     
      shape>⍥≢⍴⍵:0⍴⊂shape⍴0
-     w←⍵↓⍨offset-⎕IO
+     w←⍵↓⍨offset
      pre←(-≢shape)↑⍴w
-     ind←↑∘.,/move×⎕IO-⍨⍳¨⌈move÷⍨1+pre-shape
+     ind←↑∘.,/move×⍳¨⌈move÷⍨1+pre-shape
      ,ind(shape↑↓)¨∘⊂⍤(≢shape)⊢w
  }

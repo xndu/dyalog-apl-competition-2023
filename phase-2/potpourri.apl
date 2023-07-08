@@ -24,7 +24,7 @@ makeChange←{⎕IO←0
   ↑⍪/ last (⊢,⍨most∇⍵-×)¨ range
 }
 bruteforce←{⎕IO←0
-  ↑⍸⍵=↑∘.+/⍺×⍳¨1+⌊⍵÷⍺
+  ↑⍸⍵=⍺+.×⍨↑⍳1+⌊⍵÷⍺
 }
 
  partition←{

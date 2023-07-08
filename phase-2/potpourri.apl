@@ -11,11 +11,9 @@ vin←{
 }
 
 sortVersions←{
-  1=≡⍵: ,⊂⍵
+  w←,⊆⍵
   split←~⍤∊∘'-.'⊆⊢
-  ⍝ compare version numbers numerically
-  order←⊂⍋⍎¨@3 4 5∘split¨⍵
-  order⌷⍵
+  w[⍋⍎¨@3 4 5∘split¨w]
 }
 
 makeChange←{⎕IO←0
